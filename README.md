@@ -6,10 +6,10 @@ ca-apm Jenkins plugin project
 
 ca-apm jenkins plugin
 ---------------------
-See https://cawiki.ca.com/display/SASWAT/MAA-TixChange+APM+10+Demo+For+Gartner for an overview of the Tixchange
+See https://cawiki.ca.com/display/SASWAT/CA+-+APM+Jenkins+Plugin for an overview of the Tixchange
 project.
 
-Tixchange Setup
+Plugin Setup
 ---------------
 See https://cawiki.ca.com/display/SASWAT/CA+-+APM+Jenkins+Plugin for information on
 setting up and running thise on a local box.
