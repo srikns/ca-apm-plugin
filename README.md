@@ -28,15 +28,15 @@ This plugin allows users to collect CA-APM performance data from EM from within 
 
 Here is the list of features ( pls configuration section below for details)
 
-<br>Ability to configure multiple fail conditions
+<br>-ability to fetch multiple metrics using regex as KPI for tracking.
+<br>-Ability to configure multiple fail conditions
 	<br>Metric A less than or greater than a constant value OR
 	<br>Metric A in comparison to Metric B
-<br>Ability to send notification via Email (if smtp server is configured)
-<br>Ability to view KPI's per build or cross build dashboard in Jenkins
-<br>Ability to decorate ATC 10.1 node using custom attribute API
-<br>Ability to just notify via email: If "justEmail" is checked the build will NOT be marked as fail even if the conditions are met but only a notification will be sent
-<br>ability to fetch multiple metrics using regex.
-<br>Ability Jump to Webview in context (for both metric and time range) from build or x-build dashboard
+<br>-Ability to send notification via Email (if smtp server is configured)
+<br>-Ability to view KPI's per build or cross build dashboard in Jenkins
+<br>-Ability to decorate ATC 10.1 nodes using custom attributes like build status, number and date 
+<br>-Ability to just notify via email: If "justEmail" is checked the build will NOT be marked as fail even if the conditions are met but only a notification will be sent
+<br>-Ability Jump to Webview in context (for both metric and time range) from build or x-build dashboard
 
 
 To Run
