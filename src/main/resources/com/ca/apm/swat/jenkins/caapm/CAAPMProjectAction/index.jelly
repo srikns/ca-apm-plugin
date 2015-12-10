@@ -26,7 +26,7 @@
                                         <th bgcolor="#ADD8E6" scope="col">${metricData.metricName}</th>
                                     </tr>
                                     <tr>
-                                        <td><img class="trend" src="./renderMetricGraph?metricKey=${metricData.metricName}"/></td>
+                                        <td><a href="${it.constructWebviewURL(metricData.metricName)}" target="_blank"> <img class="trend" src="./renderMetricGraph?metricKey=${metricData.metricName}" title="Go To Webview"/></a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -43,7 +43,7 @@
          
         <tr>
           <td>
-                <h2>Build Failure Reason</h2><br/>   
+                <h2>Task Failure Reason</h2><br/>   
                 <j:set var="buildNumbToMsgMap" value="${it.buildNumberToMessageFailureMap}"/>
                  <j:set var="buildNumberSet" value="${buildNumbToMsgMap.keySet()}"/>
                  

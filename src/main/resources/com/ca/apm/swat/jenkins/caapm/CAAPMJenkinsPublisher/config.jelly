@@ -26,7 +26,7 @@
       title="${%mom.connection.test.title}" progress="${%mom.connection.test.progress}"
       method="testConnection" with="momHost,username,momPort"/>
 
-<f:section title="CA APM Options Advance Options">
+<f:section title="CA APM Advance Options">
     
     <f:advanced>      
         <f:entry field="agentPath" title="${%agent.path.title}" description="${%agent.path.description}" >
@@ -65,9 +65,9 @@
         </f:entry> 
         
 
-       <f:section title="${%single.fail.condn.title}"/>      
+       <f:section title="${%config.fail.condn.title}"/>      
 
-            <f:entry   field="singleMetric"  title="${%single.fail.condn.title}" Description="${%single.fail.condn.description}">
+            <f:entry     field="singleMetric" title="${%single.fail.condn.title}" Description="${%single.fail.condn.description}">
                 <table width="800px">
                   <tbody>
                     <tr>
@@ -76,10 +76,19 @@
                             <f:textbox field="singleMetricName" />
                         </td><td>is</td>
                         <td style="text-align: center;">
+                        
+                        <!--
                             <select name="singleMetricOperator">
                                <option value="greaterThan">Greater Than</option>
                                 <option value="lessThan">Less Than</option>
                             </select>
+                            -->
+                            <f:select field="singleMetricOperator"/>
+                            <!--
+                            <f:entry name="singleMetricOperator" title="is">
+                                <f:select />
+                            </f:entry>
+                            -->
                         </td>
                         <td>value</td>        
                         <td>
@@ -100,24 +109,67 @@
                         </td>
                         <td style="text-align: center;"> Compared to:</td>
                           <td>
-                            <f:textbox name="multiMetricName2" />
+                            <f:textbox field="multiMetricName2" />
                           </td>
                           <td style="text-align: center;">
+                          <f:select field="multiMetricOperator"/>
+                          <!--
                             <select name="multiMetricOperator">
                                <option value="greaterThan">Greater Than</option>
                                 <option value="lessThan">Less Than</option>
                             </select>
+                            -->
                         </td>
                         <td> ratio</td>
                           <td>
-                            <f:number name="multiMetricRatio" />
+                            <f:number field="multiMetricRatio" />
                           </td>
                     </tr>
                    </tbody>
                 </table>
             </f:entry>
             
+            <f:entry title="${%email.address.title}" description="${%email.address.description}">
+
+                    <f:textbox field="emailAddress"/>
+
+            </f:entry>
+            
+            <f:entry title="${%email.password.title}" description="${%email.password.description}">
+
+                    <f:password field="emailPassword"/>
+
+            </f:entry>
+
+            <f:entry title="${%email.checkbox.title}" description="${%email.checkbox.description}">
+
+                    <f:checkbox field="justEmail" default="false"/>
+
+            </f:entry>
+                    
+        
+        <f:section title="${%config.apm10.attribute.title}"/>    
     
+        <f:entry field="apm10AppName" title="${%apm10.attribute.appname.title}" description="${%apm10.attribute.appname.description}" >
+        <f:textbox field="apm10AppName"/>
+      </f:entry>
+      
+        <f:entry field="apm10RestPort" title="${%apm10.attribute.port.title}" description="${%apm10.attribute.port.description}" >
+        <f:textbox field="apm10RestPort"/>
+      </f:entry>
+      
+      <f:entry field="apm10RestToken" title="${%apm10.attribute.authToken.title}" description="${%apm10.attribute.authToken.description}" >
+        <f:textbox field="apm10RestToken"/>
+      </f:entry>
+  
+      <f:entry field="webviewHost" title="${%webview.host.title}" description="${%webview.host.description}" >
+        <f:textbox field="webviewHost"/>
+      </f:entry>
+      
+      <f:entry field="webviewPort" title="${%webview.port.title}" description="${%webview.port.description}" >
+        <f:textbox field="webviewPort"/>
+      </f:entry>
+  
    </f:advanced>
  </f:section>
 

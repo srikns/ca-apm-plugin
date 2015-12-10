@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -28,6 +29,7 @@ public abstract class GenericDataCollector
     String frequency;
     String startTime;
     String endTime;
+    static int timeout=5000;
     String numbDPToCollect;
     
     String CollectionMechanism;
@@ -50,6 +52,11 @@ public abstract class GenericDataCollector
 
             HttpClientBuilder client =  HttpClientBuilder.create();
             HttpGet request = new HttpGet(serverURL);
+            
+            RequestConfig.Builder requestBuilder = RequestConfig.custom();
+            requestBuilder = requestBuilder.setConnectTimeout(timeout);
+            
+            client.setDefaultRequestConfig(requestBuilder.build());
             CloseableHttpResponse response = client.build().execute(request);
 
             LOGGER.log(Level.FINE, "Generic Data Collector http connection response code " + response.getStatusLine().getStatusCode());

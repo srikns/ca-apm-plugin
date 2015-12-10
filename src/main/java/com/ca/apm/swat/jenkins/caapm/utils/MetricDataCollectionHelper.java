@@ -19,6 +19,8 @@ public class MetricDataCollectionHelper {
 
     //private List<MetricData> metricDataCollection1;
 
+    //don't want more than 4 unique metrics
+    public static int MAX_NUMB_OF_METRICS = 4;
     private Map<String, MetricData> metricKeyToMetricDataMap;
 
 
@@ -32,9 +34,14 @@ public class MetricDataCollectionHelper {
     }
 
 
-    public void addMetricData(String metricKey, long min, long max, long value, long count, String time, int frequency ) {
+    public boolean addMetricData(String metricKey, long min, long max, long value, long count, String time, int frequency ) {
 
 
+        //if number of metrics > the max then just return
+        if ( metricKeyToMetricDataMap.size() > MAX_NUMB_OF_METRICS) {
+            return false;
+        }
+        
         MetricData metricData = metricKeyToMetricDataMap.get(metricKey);
 
         if( metricData == null ) {
@@ -45,6 +52,7 @@ public class MetricDataCollectionHelper {
 
         metricKeyToMetricDataMap.put(metricKey, metricData);
 
+        return true;
     }
 
 

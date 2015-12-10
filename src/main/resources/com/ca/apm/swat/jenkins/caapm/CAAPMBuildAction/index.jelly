@@ -43,7 +43,7 @@
         
           
                     </td>
-                    <td><img class="trend" src="./renderMetricGraph?metricKey=${metricData.metricName}"/></td>
+                    <td><a href="${it.constructWebviewURL(metricData)}" target="_blank"><img class="trend" src="./renderMetricGraph?metricKey=${metricData.metricName}" title="Go To Webview"/></a></td>
                 </tr>
             </tbody>
            </table>

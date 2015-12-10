@@ -1,0 +1,13 @@
+/Users/noosr03/Documents/CA_Technical/apache-tomcat-8.0.21/bin/shutdown.sh
+
+rm -rf /Users/noosr03/Documents/CA_Technical/apache-tomcat-8.0.21/logs/catalina.out
+
+mvn clean package
+cp -f target/ca-apm.hpi ~/Documents/CA_Technical/Jenkins/plugins/
+#cp -f target/ca-apm.hpi ~/Documents/CA_Technical/Jenkins/
+
+sleep 2
+
+/Users/noosr03/Documents/CA_Technical/apache-tomcat-8.0.21/bin/startup.sh 
+#-Dorg.apache.commons.jelly.tags.fmt.timeZone=America/New_York -Dmail.smtp.host="https://webmail10.ca.com/EWS/Exchange.asmx" -Dmail.smtp.port="443" -Dmail.smtp.protocol="SSL" -Dmail.smtp.username="noosr03@ca.com" -Dmail.smtp.password="Hans92Raj#" -Dmail.smtp.recepient="srikant.noorani@ca.com"
+

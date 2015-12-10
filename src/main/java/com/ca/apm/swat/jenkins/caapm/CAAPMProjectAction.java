@@ -16,6 +16,7 @@ import org.apache.tools.ant.taskdefs.BuildNumber;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.urls.StandardCategoryURLGenerator;
 import org.jfree.data.category.CategoryDataset;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
@@ -42,21 +43,24 @@ public class CAAPMProjectAction implements Action
 {
 
     private final AbstractProject<?, ?> project;
-    private final String threshold;
-    private final String[] metrics;
-    private String testString = "testSrikant";
+
+    private final String webviewHost;
+    private final String webviewPort;
+    
+    private String firstBuildTime = null;
+    private String lastBuildTime = null;
 
     private static final Logger LOGGER = Logger.getLogger(CAAPMProjectAction.class.getName());
     private static final long serialVersionUID = 1L;
 
     private static final String DASHBOARD = "caapm-dashboard";
 
-    public CAAPMProjectAction (final AbstractProject project, final String threshold,
-                               final String[] metrics ) {
+    public CAAPMProjectAction (final AbstractProject project, final String webviewHost,
+                               final String webviewPort ) {
 
         this.project = project;
-        this.threshold = threshold;
-        this.metrics = metrics;
+        this.webviewHost = webviewHost;
+        this.webviewPort = webviewPort;
     }
 
     @Override
@@ -83,11 +87,6 @@ public class CAAPMProjectAction implements Action
     public boolean isTrendAvailable() {
         LOGGER.log(Level.FINE, "**** CAAPMProjectAction isTrendAvailable");
         return true;
-    }
-
-    public String getTestString() {
-        LOGGER.log(Level.FINE, "**** CAAPMProjectAction testString");
-        return testString;
     }
 
     public Collection<String> getMetricKeysFromLastGoodBuild() {
@@ -194,7 +193,7 @@ public class CAAPMProjectAction implements Action
         
         LinkedHashMap<Integer,String> buildNumberToMessageFailureMap = new LinkedHashMap<Integer, String>();
         
-        LOGGER.log(Level.FINE, "**** getBuildNumberToMessageFailureMap  Called " );
+        LOGGER.log(Level.INFO, "**** getBuildNumberToMessageFailureMap  Called " );
         
         try {
 
@@ -221,7 +220,7 @@ public class CAAPMProjectAction implements Action
                     continue;
 
 
-                LOGGER.log(Level.FINE, "**** getBuildNumberToMessageFailureMap Project Build number " + buildNumber + " Message " + report.getFailPassReason());
+                LOGGER.log(Level.INFO, "**** getBuildNumberToMessageFailureMap Project Build number " + buildNumber + " Message " + report.getFailPassReason());
 
                 if ( report.getFailPassReason() !=null )
                      buildNumberToMessageFailureMap.put(buildNumber, report.getFailPassReason());
@@ -244,6 +243,75 @@ public class CAAPMProjectAction implements Action
         }
     }
     
+    public String constructWebviewURL( String metricKey) {
+        
+        if ( metricKey == null ) {
+            LOGGER.log(Level.INFO, "**** CAAPMPROJECTACTION::constructViewURL called with empty metric Key ");
+            return "";
+        }
+        
+        //Get the build start time for first and last build
+        final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
+
+        int i = 0;
+        
+        for (AbstractBuild<?, ?> build : builds) {
+
+            if (build == null ) {
+                continue;
+            }
+
+            int buildNumber = build.number;
+            CAAPMBuildAction buildAction = build.getAction(CAAPMBuildAction.class);
+
+            if ( buildAction == null ) {
+                continue;
+            }
+
+            CAAPMPerformanceReport report = buildAction.getReport();
+
+            if ( report == null )
+                continue;
+            
+            if (lastBuildTime == null ) {
+                lastBuildTime = build.getStartTimeInMillis() +"";
+                LOGGER.log(Level.INFO, "**** CAAPMPROJECTACTION::constructViewURL last build numb " + buildNumber );
+            }
+
+            //Last 10 builds ONLY
+            if (i++ > 11 ) {
+                
+                if ( firstBuildTime == null ) {
+                    firstBuildTime = build.getStartTimeInMillis() + "";
+                    LOGGER.log(Level.INFO, "**** CAAPMPROJECTACTION::constructViewURL first build numb " + buildNumber);
+                }
+                
+                break;
+            }
+        }
+
+        metricKey = metricKey.replace("|", "%257C").replace(":", "%253A");
+        
+        LOGGER.log(Level.INFO, "**** CAAPMPROJECTACTION::constructViewURL start time " + firstBuildTime + " end time " + lastBuildTime );
+        
+        String webviewURL = null;
+        
+        if ( firstBuildTime == null || lastBuildTime == null ) {
+        
+            webviewURL = "http://" + webviewHost + ":" + webviewPort + "/#investigator;smm=false;tab-n=mb;tab-tv=pd;tr=0;uid="+ metricKey;
+        
+        } else {
+            webviewURL = "http://" + webviewHost + ":" + webviewPort + "/#investigator;et=" + lastBuildTime + ";re=15000;smm=false;st="+ firstBuildTime + 
+                    ";tab-in=mb;tab-tv=pd;tr=-1;uid="+ metricKey;
+        }
+        
+        firstBuildTime = lastBuildTime = null;
+        
+        LOGGER.log(Level.INFO, "**** CAAPMPROJECTACTION::constructViewURL wv url is " + webviewURL);
+        
+        return webviewURL;
+        
+    }
     
     public Collection<Integer> getBuildNumber() {
         HashMap<Integer,String> buildNumberToMessageFailureMap = getBuildNumberToMessageFailureMap();
@@ -289,13 +357,16 @@ public class CAAPMProjectAction implements Action
                     continue;
 
 
-                LOGGER.log(Level.FINE, "**** Project Build number " + buildNumber + " metric name "  + metricKey );
+                LOGGER.log(Level.INFO, "**** Project Build number " + buildNumber + " metric name "  + metricKey );
                 LOGGER.log(Level.FINE," Build ART " + report.getARTForBuild(metricKey));
                 
                 buildNumberToARTMap.put(buildNumber, report.getARTForBuild(metricKey));
+                
 
                 //Last 10 builds ONLY
                 if (i++ > 11 ) {
+                    
+
                     break;
                 }
 
@@ -373,6 +444,8 @@ public class CAAPMProjectAction implements Action
                     );
 
             chart.setBackgroundPaint(Color.white);
+//            StandardCategoryURLGenerator urlGen = new StandardCategoryURLGenerator();
+  //          chart.getCategoryPlot().getRenderer().setBaseItemURLGenerator(arg0);
 
             return chart;
         }

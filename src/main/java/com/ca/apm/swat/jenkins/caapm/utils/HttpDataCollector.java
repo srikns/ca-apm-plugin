@@ -3,10 +3,18 @@ package com.ca.apm.swat.jenkins.caapm.utils;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.util.logging.Logger;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -168,10 +176,12 @@ public class HttpDataCollector extends GenericDataCollector
 
         if (format.equals("xml")) {
 
-            JSONObject json = XML.toJSONObject(responseString.toString());
+            JSONObject json = null;
 
 
             try {
+                json = XML.toJSONObject(responseString.toString());;
+                
                 JSONArray jsonDataPoints = json.getJSONObject("introscope-datapoints").getJSONArray("datapoint");
                 int length = jsonDataPoints.length();
 
@@ -193,7 +203,10 @@ public class HttpDataCollector extends GenericDataCollector
                     int frequency = jsonDataPoints.getJSONObject(i).getInt("period-in-seconds");
 
                     //DataPoint dataPoint =  metricDataCollection.new DataPoint(min, max, value, count, time, frequency );
-                    metricDataCollectionHelper.addMetricData(metricKey, min, max, value, count, time, frequency);
+                    if (!metricDataCollectionHelper.addMetricData(metricKey, min, max, value, count, time, frequency) ) {
+                        LOGGER.log(Level.FINE, "*** parsedResponse: Metric Collection cannot add more unique metrics as Max metric limit of " 
+                                        + MetricDataCollectionHelper.MAX_NUMB_OF_METRICS + " reached ");
+                    }
 
                     LOGGER.log(Level.FINE, "*** parsedResponse: Metric Collection is " + min +" : " +  max+" : " + value +" : " + count+" : " + time+" : " + frequency );
                 }
@@ -232,8 +245,15 @@ public class HttpDataCollector extends GenericDataCollector
             HttpClientBuilder client =  HttpClientBuilder.create();
             HttpGet request = new HttpGet(connectionURL + queryParam);
 
+            RequestConfig.Builder requestBuilder = RequestConfig.custom();
+            requestBuilder = requestBuilder.setConnectTimeout(timeout);
+            requestBuilder = requestBuilder.setConnectionRequestTimeout(timeout);
+            
+            client.setDefaultRequestConfig(requestBuilder.build());
+            
             LOGGER.log(Level.FINE, "Connection String is " + connectionURL + queryParam);
 
+            
             response = client.build().execute(request);;
             BufferedReader rd = new BufferedReader (new InputStreamReader(response.getEntity().getContent()));
 
@@ -260,7 +280,43 @@ public class HttpDataCollector extends GenericDataCollector
 
     }
 
+    public HttpClientBuilder IgnoreSSLClient( HttpClientBuilder client) throws Exception {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
+            public java.security.cert.X509Certificate[] getAcceptedIssuers(){return null;}
 
+            @Override
+            public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
+                                           String authType)
+                                                   throws java.security.cert.CertificateException {}
+            @Override
+            public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
+                                           String authType)
+                                                   throws java.security.cert.CertificateException{}
+        }};
+
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            //@SuppressWarnings("deprecation")
+            javax.net.ssl.HostnameVerifier hnv = new javax.net.ssl.HostnameVerifier() {
+                
+                @Override
+                public boolean verify(String arg0, SSLSession session)
+                {
+                    return true;
+                }
+            };
+            SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory( sc, hnv) ;
+            //HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            client.setSSLSocketFactory(sslcsf);
+            
+            return client;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 }
