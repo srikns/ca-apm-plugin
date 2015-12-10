@@ -16,6 +16,7 @@ project.
 Plugin Setup
 ---------------
 Follows the standard Jenkins plugin process.
+You will need easy XL tool kit - an EM side plugin - for this plugin to work (pls talk to your sales team)
 See https://cawiki.ca.com/display/SASWAT/CA+-+APM+Jenkins+Plugin (CA internal) for information on
 setting up and running thise on a local box.
 
