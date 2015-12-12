@@ -10,15 +10,12 @@ Developed by Srikant Noorani @ CA Inc Dec 2015
 <br>This is NOT an officially supported CA product but is provided on an as is basis. 
 Pls collaborated and improve
 
-See https://cawiki.ca.com/display/SASWAT/CA+-+APM+Jenkins+Plugin (CA internal) for an overview of the Tixchange
 project.
 
 Plugin Setup
 ---------------
 Follows the standard Jenkins plugin process.
 <br>You will need easy XL tool kit - an EM side plugin - for this plugin to work (pls talk to your sales team)
-<br>See https://cawiki.ca.com/display/SASWAT/CA+-+APM+Jenkins+Plugin (CA internal) for information on
-setting up and running thise on a local box.
 
 
 Description
