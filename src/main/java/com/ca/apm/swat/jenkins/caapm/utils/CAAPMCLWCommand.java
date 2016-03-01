@@ -46,7 +46,7 @@ public class CAAPMCLWCommand
            process = Runtime.getRuntime().exec("/Users/noosr03/Documents/CA_Technical/Jenkins/Example/CAAPM_CLW/runCLW");
             int read = -1;
             
-            LOGGER.log(Level.INFO, " in CLWCommand executeCLWQuery" );
+            LOGGER.log(Level.FINEST, " in CLWCommand executeCLWQuery" );
             
             byte[] b = new byte[100];
             
@@ -54,17 +54,17 @@ public class CAAPMCLWCommand
             
             while ( (read = process.getInputStream().read(b, 0 , 100)) != -1 ) {
 
-                //LOGGER.log(Level.INFO, " Query Output from " + process.getInputStream().read());
+                //LOGGER.log(Level.FINEST, " Query Output from " + process.getInputStream().read());
                 outPut.append(new String(b));
             }
             
             //String outPut = new String(b);
             
-            LOGGER.log(Level.INFO, " Query Output from " + outPut);
+            LOGGER.log(Level.FINEST, " Query Output from " + outPut);
             
             while ( (read = process.getErrorStream().read(b)) != -1 ) {
 
-                LOGGER.log(Level.INFO, " Query Error from " + new String(b));
+                LOGGER.log(Level.FINEST, " Query Error from " + new String(b));
 
             }  
             
@@ -79,7 +79,7 @@ public class CAAPMCLWCommand
 
         } catch ( InterruptedException intEx ) {
 
-            LOGGER.log(Level.INFO, "WARN:: QueryProcessor: run: method was interrupted " );
+            LOGGER.log(Level.FINEST, "WARN:: QueryProcessor: run: method was interrupted " );
             
             intEx.printStackTrace();                                
 

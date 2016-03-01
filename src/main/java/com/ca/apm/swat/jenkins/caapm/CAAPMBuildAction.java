@@ -45,8 +45,8 @@ public class CAAPMBuildAction implements Action {
 
     private final AbstractBuild<?, ?> build;
     private final CAAPMPerformanceReport report;
-    private static final Logger LOGGER = Logger.getLogger(CAAPMBuildAction.class.getName());
     private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(CAAPMBuildAction.class.getName());
    
     private String webviewHost;
     private String webviewPort;
@@ -92,14 +92,14 @@ public class CAAPMBuildAction implements Action {
     }
 
     public AbstractBuild<?, ?> getBuild() {
-        LOGGER.log(Level.INFO, "**** CAAPMBuildAction get Build Called");
+         LOGGER.log(Level.FINEST, "**** CAAPMBuildAction get Build Called");
 
         return build;
     }
 
     public CAAPMPerformanceReport getReport() {
 
-        LOGGER.log(Level.INFO, "**** CAAPMBuildAction get Report Called");
+         LOGGER.log(Level.FINEST, "**** CAAPMBuildAction get Report Called");
 
         return report;
     }
@@ -107,7 +107,7 @@ public class CAAPMBuildAction implements Action {
     public String constructWebviewURL( MetricData metricData) {
 
         if ( metricData == null ) {
-            LOGGER.log(Level.INFO, "**** CAAPM BuildAction ::constructViewURL called with empty metric data object ");
+             LOGGER.log(Level.FINEST, "**** CAAPM BuildAction ::constructViewURL called with empty metric data object ");
             return "";
         }
 
@@ -127,7 +127,7 @@ public class CAAPMBuildAction implements Action {
                 try {
                     date = format.parse(temp);
                 } catch ( Exception ex ) {
-                    LOGGER.log(Level.INFO, "**** BuildAction::constructViewURL could not format start Time " );
+                     LOGGER.log(Level.FINEST, "**** BuildAction::constructViewURL could not format start Time " );
                     ex.printStackTrace();
                     break;
                 }
@@ -142,7 +142,7 @@ public class CAAPMBuildAction implements Action {
             Date date = format.parse(temp);
             buildEndTime = date.getTime() +"";
         } catch ( Exception ex ) {
-            LOGGER.log(Level.INFO, "**** BuildAction::constructViewURL could not format end Time " );
+             LOGGER.log(Level.FINEST, "**** BuildAction::constructViewURL could not format end Time " );
             ex.printStackTrace();
 
         }
@@ -150,7 +150,7 @@ public class CAAPMBuildAction implements Action {
 
         String metricKey = metricData.getMetricName().replace("|", "%257C").replace(":", "%253A");
 
-        LOGGER.log(Level.INFO, "**** BuildAction::constructViewURL start time " + buildStartTime + " end time " + buildEndTime );
+         LOGGER.log(Level.FINEST, "**** BuildAction::constructViewURL start time " + buildStartTime + " end time " + buildEndTime );
 
         String webviewURL = null;
 
@@ -165,7 +165,7 @@ public class CAAPMBuildAction implements Action {
 
         //firstBuildTime = lastBuildTime = null;
 
-        LOGGER.log(Level.INFO, "**** BuildAction::constructViewURL wv url is " + webviewURL);
+         LOGGER.log(Level.FINEST, "**** BuildAction::constructViewURL wv url is " + webviewURL);
 
         return webviewURL;
 
@@ -175,18 +175,18 @@ public class CAAPMBuildAction implements Action {
     public void doRenderMetricGraph(final StaplerRequest request,
                                     final StaplerResponse response) throws IOException  {
         String metricKey = request.getParameter("metricKey");
-        final Graph graph = new GraphImpl( metricKey, build.number);
+        final Graph graph = new GraphImplementation( metricKey, build.number);
 
-        LOGGER.log(Level.INFO, "**** CAAPM BuildAction rendering metric graph " + metricKey);
+         LOGGER.log(Level.FINEST, "**** CAAPM BuildAction rendering metric graph " + metricKey);
 
         graph.doPng(request, response);
     }
 
-    private class GraphImpl extends Graph {
+    private class GraphImplementation extends Graph {
         private final String metricKey;
         private final int buildNumb;
 
-        protected GraphImpl(final String metricKey, final int buildNumb ) {
+        protected GraphImplementation(final String metricKey, final int buildNumb ) {
             super(-1, 550, 600); 
             this.metricKey = metricKey;
             this.buildNumb = buildNumb;
@@ -206,7 +206,7 @@ public class CAAPMBuildAction implements Action {
             for ( int i = 0 ; i < dpCollectionSize; i++ ){
 
                 long value = dpCollection.get(i).getValue();
-                LOGGER.log(Level.INFO, "**** metricKey " + metricKey + " value is " + value );
+                 LOGGER.log(Level.FINEST, "**** metricKey " + metricKey + " value is " + value );
 
 
                 dataSetBuilder.add(value, report.getReportName(), i+1);
@@ -231,7 +231,7 @@ public class CAAPMBuildAction implements Action {
                 metricName = stringArray[1];
             }
 
-            final JFreeChart chart = ChartFactory.createLineChart(metricName, 
+            final JFreeChart barChart = ChartFactory.createBarChart(metricName, 
                                                                   "Time Interval",
                                                                   null, 
                                                                   dataset, 
@@ -241,9 +241,10 @@ public class CAAPMBuildAction implements Action {
                                                                   false 
                     );
 
-            chart.setBackgroundPaint(Color.yellow);
+            barChart.setBackgroundPaint(Color.yellow);
+            barChart.getCategoryPlot().getRenderer().setSeriesPaint(0,  Color.DARK_GRAY);
 
-            return chart;
+            return barChart;
         }
     }
 }

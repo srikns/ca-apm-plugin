@@ -59,7 +59,7 @@ public abstract class GenericDataCollector
             client.setDefaultRequestConfig(requestBuilder.build());
             CloseableHttpResponse response = client.build().execute(request);
 
-            LOGGER.log(Level.FINE, "Generic Data Collector http connection response code " + response.getStatusLine().getStatusCode());
+            LOGGER.log(Level.FINEST, "Generic Data Collector http connection response code " + response.getStatusLine().getStatusCode());
             
             if ( response.getStatusLine().getStatusCode() == 200 ) {
                 return true;

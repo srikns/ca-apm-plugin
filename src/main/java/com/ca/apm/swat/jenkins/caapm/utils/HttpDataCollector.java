@@ -50,7 +50,7 @@ public class HttpDataCollector extends GenericDataCollector
     {
 
         int calculatedFreqInSec = 0;
-        LOGGER.log(Level.INFO, "MetricDataCollection fetchAllMetricData startTimeinMS " + startTimeInMS + " endTimeinMS " +
+        LOGGER.log(Level.FINEST, "MetricDataCollection fetchAllMetricData startTimeinMS " + startTimeInMS + " endTimeinMS " +
                     endTimeInMS  + " ( endTimeInMS - startTimeInMS)/1000 " +  ( endTimeInMS - startTimeInMS)/1000);
 
         long relativeTimeInSec = ( endTimeInMS - startTimeInMS)/1000;
@@ -64,7 +64,7 @@ public class HttpDataCollector extends GenericDataCollector
             
             //not enough DP's
             if ( numbOfDataPoints < MIN_DATA_POINTS) {
-                LOGGER.log(Level.INFO, "MetricDataCollection fetchAllMetricData  numbOfDataPoints is less than minimum ");
+                LOGGER.log(Level.FINEST, "MetricDataCollection fetchAllMetricData  numbOfDataPoints is less than minimum ");
                 return null;
             }
             
@@ -99,7 +99,7 @@ public class HttpDataCollector extends GenericDataCollector
             
         }
 
-        LOGGER.log(Level.INFO, "MetricDataCollection calculatedFreqInSec " + calculatedFreqInSec + " numbOfDataPoints " + numbOfDataPoints + " relativeTimeInSec " + relativeTimeInSec);
+        LOGGER.log(Level.FINEST, "MetricDataCollection calculatedFreqInSec " + calculatedFreqInSec + " numbOfDataPoints " + numbOfDataPoints + " relativeTimeInSec " + relativeTimeInSec);
 
         String format = "xml";
         String responseString = fetchMetricData(agentRegex, metricRegex, calculatedFreqInSec +"", "last" + (relativeTimeInSec/60) + "minutes", format);
@@ -132,7 +132,7 @@ public class HttpDataCollector extends GenericDataCollector
         numbDPToCollect =  numbDPToCollect > MAX_DATA_POINTS  ? MAX_DATA_POINTS : numbDPToCollect;
         numbDPToCollect =  numbDPToCollect < MIN_DATA_POINTS  ? MIN_DATA_POINTS : numbDPToCollect;
 
-        LOGGER.log(Level.INFO, "MetricDataCollection fetchMetricData startTimeinMS " + startTimeInMS + " endTimeinMS " + endTimeInMS  + 
+        LOGGER.log(Level.FINEST, "MetricDataCollection fetchMetricData startTimeinMS " + startTimeInMS + " endTimeinMS " + endTimeInMS  + 
                    " ( endTimeInMS - startTimeInMS)/1000 " +  ( endTimeInMS - startTimeInMS)/1000);
 
        // long relativeTimeInMts = 0;
@@ -144,7 +144,7 @@ public class HttpDataCollector extends GenericDataCollector
         String relativeTime = "last" + relativeTimeInSec/60+"minutes";
 
 
-        LOGGER.log(Level.INFO, "MetricDataCollection relative " + relativeTimeInSec + " Freq in Sec " + frequencyInSec );
+        LOGGER.log(Level.FINEST, "MetricDataCollection relative " + relativeTimeInSec + " Freq in Sec " + frequencyInSec );
 
 
 

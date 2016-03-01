@@ -72,7 +72,7 @@ public class APMCustomAttributeManager
             System.out.println( "APMCustomAttributeManager connection url is " + connectionURL);
             
             
-            LOGGER.log(Level.FINE, "APMCustomAttributeManager connection url is " + connectionURL);
+            LOGGER.log(Level.FINEST, "APMCustomAttributeManager connection url is " + connectionURL);
             
             List<VertexInfo> vis =  getVertexInfoByApp(connectionURL);
 
@@ -81,7 +81,7 @@ public class APMCustomAttributeManager
             SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MMM-dd HH-mm a"); //format it as per your requirement
             String buildDate = formatter.format(currentDate.getTime());
 
-            LOGGER.log(Level.FINE, "APMCustomAttributeManager build date is " + buildDate);
+            LOGGER.log(Level.FINEST, "APMCustomAttributeManager build date is " + buildDate);
 
             String payload = null;
 
@@ -122,13 +122,13 @@ public class APMCustomAttributeManager
 
                 client.setDefaultRequestConfig(requestBuilder.build());
 
-                LOGGER.log(Level.FINE,  "Connection String is " + buildDate );
+                LOGGER.log(Level.FINEST,  "Connection String is " + buildDate );
 
                 
-                LOGGER.log(Level.FINE,  "Connection String is " + connectionURL );
+                LOGGER.log(Level.FINEST,  "Connection String is " + connectionURL );
                 response = client.build().execute(request);
 
-                LOGGER.log(Level.FINE, "Connection String is return code " + response.getStatusLine().getStatusCode());
+                LOGGER.log(Level.FINEST, "Connection String is return code " + response.getStatusLine().getStatusCode());
 
                 if (response.getStatusLine().getStatusCode() != 200  && response.getEntity() != null ) {
                     BufferedReader rd = new BufferedReader (new InputStreamReader(response.getEntity().getContent()));
@@ -222,9 +222,9 @@ public class APMCustomAttributeManager
         }
         if (statusCode > 204)
         {
-            LOGGER.log(Level.FINE, "ApmAttributeHelper: Error executing request: "
+            LOGGER.log(Level.FINEST, "ApmAttributeHelper: Error executing request: "
                     + resp.getStatusLine());
-            LOGGER.log(Level.FINE, "Response: " + jsonObj);
+            LOGGER.log(Level.FINEST, "Response: " + jsonObj);
         }
         HttpClientUtils.closeQuietly(resp);
         return jsonObj;

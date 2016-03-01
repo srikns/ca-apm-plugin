@@ -51,7 +51,7 @@ import com.ca.apm.swat.jenkins.caapm.utils.MetricDataCollectionHelper.MetricData
 public class CAAPMJenkinsPublisher extends Recorder {
 
     private static final Logger LOGGER = Logger.getLogger(CAAPMJenkinsPublisher.class.getName());
-    private static final int DEFAULT_MINIMUM_TIME_RANGE_MINUTES = 10;
+    private static final int MINIMUM_TIME_RANGE_MINUTES = 10;
 
     private String momHost;
     private String momPort;
@@ -239,7 +239,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
             PrintStream logger = listener.getLogger();
 
 
-            logger.println("**** Running Perform method in Junkins Publisher " );
+            LOGGER.log(Level.FINEST, "**** Running Perform method in Junkins Publisher " );
 
 
             HttpDataCollector httpDataCollector = new HttpDataCollector(momHost, momPort);
@@ -247,7 +247,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(build.getStartTimeInMillis());
 
-            logger.println("**** Running Perform method buildStart Time is " + cal.get(Calendar.DATE) + ":" + cal.get(Calendar.MONTH) + ":" + cal.get(Calendar.HOUR) + ":" + cal.get(Calendar.MINUTE) );
+            LOGGER.log(Level.FINEST, "**** Running Perform method buildStart Time is " + cal.get(Calendar.DATE) + ":" + cal.get(Calendar.MONTH) + ":" + cal.get(Calendar.HOUR) + ":" + cal.get(Calendar.MINUTE) );
 
             MetricDataCollectionHelper metricDataCollectionHelper = null;
 
@@ -270,7 +270,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
             if ( metricDataCollectionHelper == null ) {
 
 
-                logger.println("**** Perform MetricDataCollection returned null" );
+                LOGGER.log(Level.FINEST, "**** Perform MetricDataCollection returned null" );
 
                 //build.setResult(Result.FAILURE);
 
@@ -278,7 +278,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
 
                 report.setFailPassReason(failReason);
 
-                logger.println(" BUILD FAILED: "+ failReason );
+                LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason );
 
                 //if ( !justEmail ) {
                 build.setResult(Result.FAILURE);
@@ -294,13 +294,13 @@ public class CAAPMJenkinsPublisher extends Recorder {
             //this could happen if we had enough time in build time but for some reason EM did not return enough DP's
             if ( metricDataCollectionHelper.getMetricKeyToMetricDataMap().size() == 0 ) {
 
-                logger.println("**** Perform MetricDataCollection returned null OR metricData Collection 0" );
+                LOGGER.log(Level.FINEST, "**** Perform MetricDataCollection returned null OR metricData Collection 0" );
 
                 String failReason = "Sorry not enough data points. May be EM has just started.";
 
                 report.setFailPassReason(failReason);
 
-                logger.println(" BUILD FAILED: "+ failReason );
+                LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason );
 
                 // if ( !justEmail ) {
                 build.setResult(Result.FAILURE);
@@ -325,13 +325,13 @@ public class CAAPMJenkinsPublisher extends Recorder {
                 }
 
                 if (!minNumbOfDPsAvailable) {
-                    logger.println("**** Not enough Data Points available for any metrics" );
+                    LOGGER.log(Level.FINEST, "**** Not enough Data Points available for any metrics" );
 
                     String failReason = "Sorry not enough Data Points available for any metrics. Pls wait till we have at least " + GenericDataCollector.MIN_DATA_POINTS + " data points.";
 
                     report.setFailPassReason(failReason);
 
-                    logger.println(" BUILD FAILED: "+ failReason );
+                    LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason );
 
                     // if ( !justEmail ) {
                     build.setResult(Result.FAILURE);
@@ -429,7 +429,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
             String failReason = "Either metric1 \"" + metricKey1 + "\" or metric2 \"" + metricKey2 +"\" did not match any metric specified in agent and metric path";
             report.setFailPassReason(failReason);
 
-            logger.println(" BUILD FAILED: "+ failReason );
+            LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason );
 
             return false;
         }
@@ -454,7 +454,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
 
                    // report.setFailPassReason(failReason);
 
-                    logger.println(" BUILD FAILED: "+ failReason + " just email " + justEmail);
+                    LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason + " just email " + justEmail);
 
                   //only fail if justEmail is not set
                     if ( !justEmail ) {
@@ -469,7 +469,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
 
                     //report.setFailPassReason(failReason);
 
-                    logger.println(" BUILD FAILED: "+ failReason + " just email " + justEmail);
+                    LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason + " just email " + justEmail);
                     
                     //only fail if justEmail is not set
                     if ( !justEmail ) {
@@ -514,7 +514,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
             String failReason = "Metric \"" + metricKey + "\" did not match any metric specified in agent and metric path";
             report.setFailPassReason(failReason);
 
-            logger.println(" BUILD FAILED: "+ failReason );
+            LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason );
 
             return false;
         }
@@ -529,7 +529,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
 
                 String failReason = "Build fail condition met. Calculated value " + average + " for metric  \""  + metricKey + "\" is greater than the specified value of " + metricValue;
 
-                logger.println(" BUILD FAILED??: "+ failReason  + " just email is " + justEmail);
+                LOGGER.log(Level.FINEST, " BUILD FAILED??: "+ failReason  + " just email is " + justEmail);
               
                 //only fail if justEmail is not set
                 if ( !justEmail ) {
@@ -546,7 +546,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
 
                // report.setFailPassReason(failReason);
 
-                logger.println(" BUILD FAILED: "+ failReason );
+                LOGGER.log(Level.FINEST, " BUILD FAILED: "+ failReason );
 
               //only fail if justEmail is not set
                 if ( !justEmail ) {
@@ -566,7 +566,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
     public Action getProjectAction(AbstractProject<?, ?> project) {
         //String[] dummyMetrics = new String[10];
 
-        System.out.println( " in getProject Action in publisher ####");
+        LOGGER.log(Level.FINEST, " in getProject Action in publisher ####");
 
         return new CAAPMProjectAction(project, webviewHost, webviewPort);
     }
@@ -771,7 +771,7 @@ public class CAAPMJenkinsPublisher extends Recorder {
                 webviewHost = formData.getString("webviewHost");
                 webviewPort = formData.getString("webviewPort");
 
-                System.out.println( "##### new formData " + formData);
+                LOGGER.log(Level.FINEST, "##### new formData " + formData);
 
                 CAAPMJenkinsPublisher caAPMPublisher = new CAAPMJenkinsPublisher(momHost, momPort, username, password,
                                                                                  lastNDataPoints, frequencyInSec, allDataPoints, agentPath, metricPath, singleMetricName, 

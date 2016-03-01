@@ -85,7 +85,7 @@ public class CAAPMProjectAction implements Action
     }
 
     public boolean isTrendAvailable() {
-        LOGGER.log(Level.FINE, "**** CAAPMProjectAction isTrendAvailable");
+        LOGGER.log(Level.FINEST, "**** CAAPMProjectAction isTrendAvailable");
         return true;
     }
 
@@ -94,14 +94,14 @@ public class CAAPMProjectAction implements Action
         final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
 
         for (AbstractBuild<?, ?> build : builds) {
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction getMetricKeysFromLastGoodBuild Called 1 " + build.number);
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction getMetricKeysFromLastGoodBuild Called 1 " + build.number);
 
             CAAPMBuildAction buildAction = build.getAction(CAAPMBuildAction.class);
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction getMetricKeysFromLastGoodBuildCalled 2 " + buildAction);
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction getMetricKeysFromLastGoodBuildCalled 2 " + buildAction);
 
             if ( buildAction == null )
                 continue;
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction getMetricKeysFromLastGoodBuildCalled 3 -  " + buildAction.getDisplayName());
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction getMetricKeysFromLastGoodBuildCalled 3 -  " + buildAction.getDisplayName());
 
             CAAPMPerformanceReport report = buildAction.getReport();
 
@@ -109,7 +109,7 @@ public class CAAPMProjectAction implements Action
                 Collection<String> keySet = report.getMetricKeySet();
 
                 if(keySet == null) {
-                    LOGGER.log(Level.FINE, "**** CAAPMProjectActiongetMetricKeysFromLastGoodBuild Called 4 -  key set is null" );
+                    LOGGER.log(Level.FINEST, "**** CAAPMProjectActiongetMetricKeysFromLastGoodBuild Called 4 -  key set is null" );
                     continue;
                 }
                 return keySet;
@@ -128,14 +128,14 @@ public class CAAPMProjectAction implements Action
         final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
 
         for (AbstractBuild<?, ?> build : builds) {
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 1 " + build.number);
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 1 " + build.number);
 
             CAAPMBuildAction buildAction = build.getAction(CAAPMBuildAction.class);
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 2 " + buildAction);
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 2 " + buildAction);
 
             if ( buildAction == null )
                 continue;
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 3 -  " + buildAction.getDisplayName());
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 3 -  " + buildAction.getDisplayName());
 
             CAAPMPerformanceReport report = buildAction.getReport();
 
@@ -143,7 +143,7 @@ public class CAAPMProjectAction implements Action
                 Collection<MetricData> metricDataCollection = report.getMetricDataCollection();
 
                 if(metricDataCollection == null) {
-                    LOGGER.log(Level.FINE, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 4 -  key set is null" );
+                    LOGGER.log(Level.FINEST, "**** CAAPMProjectAction getMetricDataFromLastGoodBuild Called 4 -  key set is null" );
                     continue;
                 }
                 return metricDataCollection;
@@ -160,19 +160,19 @@ public class CAAPMProjectAction implements Action
         final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
 
         for (AbstractBuild<?, ?> build : builds) {
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction get Last Build Called 1 " + build.number);
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction get Last Build Called 1 " + build.number);
 
             CAAPMBuildAction buildAction = build.getAction(CAAPMBuildAction.class);
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction get Last Build Called 2 " + buildAction);
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction get Last Build Called 2 " + buildAction);
 
             if ( buildAction == null )
                 continue;
-            LOGGER.log(Level.FINE, "**** CAAPMProjectAction get Last Build Called 3 -  " + buildAction.getDisplayName());
+            LOGGER.log(Level.FINEST, "**** CAAPMProjectAction get Last Build Called 3 -  " + buildAction.getDisplayName());
 
         }
-        //LOGGER.log(Level.FINE, "**** CAAPMProjectAction get Last Build Called 1 -  " + project.getLastSuccessfulBuild().number);
-        // LOGGER.log(Level.FINE, "**** CAAPMProjectAction get Last Build Called 2 -  " + project.getLastCompletedBuild().getAction(CAAPMBuildAction.class));
-        // LOGGER.log(Level.FINE, "**** CAAPMProjectAction get Last Build Called 3 -  " + project.getLastSuccessfulBuild().getAction(CAAPMBuildAction.class).getDisplayName());
+        //LOGGER.log(Level.FINEST, "**** CAAPMProjectAction get Last Build Called 1 -  " + project.getLastSuccessfulBuild().number);
+        // LOGGER.log(Level.FINEST, "**** CAAPMProjectAction get Last Build Called 2 -  " + project.getLastCompletedBuild().getAction(CAAPMBuildAction.class));
+        // LOGGER.log(Level.FINEST, "**** CAAPMProjectAction get Last Build Called 3 -  " + project.getLastSuccessfulBuild().getAction(CAAPMBuildAction.class).getDisplayName());
 
         return project.getLastSuccessfulBuild().getAction(CAAPMBuildAction.class).getReport();
     }
@@ -330,7 +330,7 @@ public class CAAPMProjectAction implements Action
         String metricKey = request.getParameter("metricKey");
         HashMap<Integer, Long> buildNumberToARTMap = new HashMap<Integer, Long>();
 
-        LOGGER.log(Level.FINE, "**** Project Build render Metric Graph " + metricKey );
+        LOGGER.log(Level.FINEST, "**** Project Build render Metric Graph " + metricKey );
 
         try {
 
@@ -358,7 +358,7 @@ public class CAAPMProjectAction implements Action
 
 
                 LOGGER.log(Level.INFO, "**** Project Build number " + buildNumber + " metric name "  + metricKey );
-                LOGGER.log(Level.FINE," Build ART " + report.getARTForBuild(metricKey));
+                LOGGER.log(Level.FINEST," Build ART " + report.getARTForBuild(metricKey));
                 
                 buildNumberToARTMap.put(buildNumber, report.getARTForBuild(metricKey));
                 
@@ -375,9 +375,9 @@ public class CAAPMProjectAction implements Action
             ex.printStackTrace();
         }
 
-        final Graph graph = new GraphImpl(metricKey, buildNumberToARTMap );
+        final Graph graph = new GraphImplementation(metricKey, buildNumberToARTMap );
 
-        LOGGER.log(Level.FINE, "**** Project rendering metric graph ");
+        LOGGER.log(Level.FINEST, "**** Project rendering metric graph ");
         //System.out.println(" Project rendering metric graph system out");
 
         graph.doPng(request, response);
@@ -388,11 +388,11 @@ public class CAAPMProjectAction implements Action
     
 
     
-    private class GraphImpl extends Graph {
+    private class GraphImplementation extends Graph {
         private final String graphTitle;
         private HashMap<Integer, Long> buildNumberToARTMap;
 
-        protected GraphImpl(final String metricKey, HashMap<Integer, Long> buildNumberToARTMap) {
+        protected GraphImplementation(final String metricKey, HashMap<Integer, Long> buildNumberToARTMap) {
             super(-1, 500, 400); 
             this.graphTitle = metricKey;
             this.buildNumberToARTMap = buildNumberToARTMap;
@@ -411,9 +411,8 @@ public class CAAPMProjectAction implements Action
                 Integer buildNumber = iter.next();
 
                 dataSetBuilder.add(buildNumberToARTMap.get(buildNumber), "Test Graph Srikant", buildNumber);
-                // dataSetBuilder.add(10, "Test Graph Srikant", buildNumber);
 
-                LOGGER.log(Level.FINE, "****#### Render Graph CA " + buildNumberToARTMap.get(buildNumber) );
+                LOGGER.log(Level.FINEST, "****#### Render Graph CA " + buildNumberToARTMap.get(buildNumber) );
             }
 
             return dataSetBuilder;
@@ -433,7 +432,7 @@ public class CAAPMProjectAction implements Action
                 metricName = stringArray[1];
             }
 
-            final JFreeChart chart = ChartFactory.createLineChart(" ", 
+            final JFreeChart barChart = ChartFactory.createBarChart3D(" ", 
                                                                   "Build Number", 
                                                                   null, 
                                                                   dataset,
@@ -443,11 +442,13 @@ public class CAAPMProjectAction implements Action
                                                                   false 
                     );
 
-            chart.setBackgroundPaint(Color.white);
+            barChart.setBackgroundPaint(Color.white);
+            barChart.setBackgroundPaint(Color.yellow);
+            barChart.getCategoryPlot().getRenderer().setSeriesPaint(0,  Color.darkGray);
 //            StandardCategoryURLGenerator urlGen = new StandardCategoryURLGenerator();
   //          chart.getCategoryPlot().getRenderer().setBaseItemURLGenerator(arg0);
 
-            return chart;
+            return barChart;
         }
     }
 }

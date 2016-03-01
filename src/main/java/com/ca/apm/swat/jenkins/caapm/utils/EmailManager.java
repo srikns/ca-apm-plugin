@@ -58,7 +58,7 @@ public class EmailManager {
         {
             envVars = build.getEnvironment(listener);
             
-            LOGGER.log(Level.INFO, "**** EmailManager::EmailManager envVars is " + envVars.get("mail.smtp.host"));
+            LOGGER.log(Level.FINEST, "**** EmailManager::EmailManager envVars is " + envVars.get("mail.smtp.host"));
         } catch (IOException e)
         {
             // TODO Auto-generated catch block
@@ -110,7 +110,7 @@ public class EmailManager {
 	            || username == null || password == null )
 	        return;
 	    
-	    LOGGER.log(Level.INFO, "EmailManager::sendMail smtp host " + smtpHost + " projectName " + projectName + 
+	    LOGGER.log(Level.FINEST, "EmailManager::sendMail smtp host " + smtpHost + " projectName " + projectName + 
 	               " recepient " + recepient + " password " + password );
 
 		//Properties props = new Properties();
