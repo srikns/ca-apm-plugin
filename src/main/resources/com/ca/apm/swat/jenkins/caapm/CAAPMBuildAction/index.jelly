@@ -1,7 +1,9 @@
+<?jelly escape-by-default='true'?> 
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
          xmlns:l="/lib/layout">
  <l:layout title="CA APM Build Report" >
  <st:include it="${it.build}" page="sidepanel.jelly"/>
+ 
     <l:main-panel>
       <j:set var="report" value="${it.report}"/>
       <h2> CA APM Performance Dashboard for build - ${it.build.number}</h2>
