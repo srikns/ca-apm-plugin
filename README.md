@@ -1,9 +1,6 @@
 CA-APM Jenkins Plugin
 ====================
 
-ca-apm Jenkins plugin project
-
-
 ca-apm jenkins plugin
 ---------------------
 Developed by Srikant Noorani @ CA Inc Dec 2015
@@ -17,7 +14,7 @@ Follows the standard Jenkins plugin process.
 
 Description
 -----------------
-This plugin allows Jenkins users to collect CA-APM performance data from EM.
+This plugin allows Jenkins users to collect [CA-APM](http://www.ca.com/us/products/ca-application-performance-management.html) performance data from EM.
 
 Here is the list of features ( see the configuration section below for details)
 
