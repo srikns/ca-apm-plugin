@@ -5,7 +5,7 @@ ca-apm jenkins plugin
 ---------------------
 Developed by Srikant Noorani @ CA Inc Dec 2015
 <br>This is NOT an officially supported CA product but is provided on an as is basis. 
-Pls collaborate and improve the project.
+Please collaborate and improve the project.
 
 Plugin Setup
 ---------------
